@@ -1,0 +1,398 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kalkulator Dark - Black & Gray</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #1a1a1a 0%, #2d2d2d 50%, #1a1a1a 100%);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+
+        .calculator {
+            background: #0f0f0f;
+            backdrop-filter: blur(20px);
+            border-radius: 25px;
+            padding: 30px;
+            box-shadow: 
+                0 20px 40px rgba(0, 0, 0, 0.5),
+                inset 0 1px 0 rgba(255, 255, 255, 0.05);
+            border: 1px solid #333;
+            max-width: 380px;
+            width: 100%;
+        }
+
+        .title {
+            text-align: center;
+            color: #e0e0e0;
+            margin-bottom: 20px;
+            font-size: 1.5em;
+            text-shadow: 0 2px 4px rgba(0, 0, 0, 0.8);
+        }
+
+        /* DISPLAY DENGAN RIWAYAT - HITAM & ABU */
+        .display-container {
+            background: #1a1a1a;
+            border-radius: 15px;
+            padding: 20px;
+            margin-bottom: 20px;
+            box-shadow: 
+                inset 0 5px 15px rgba(0, 0, 0, 0.6),
+                0 2px 10px rgba(0, 0, 0, 0.3);
+            border: 1px solid #333;
+            min-height: 120px;
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-end;
+        }
+
+        .history-display {
+            color: #ffffff;
+            font-family: 'Courier New', monospace;
+            font-size: 0.95em;
+            text-align: right;
+            margin-bottom: 8px;
+            min-height: 30px;
+            padding-right: 10px;
+            line-height: 1.4;
+            max-height: 60px;
+            overflow-y: auto;
+            scrollbar-width: thin;
+            scrollbar-color: #555 transparent;
+        }
+
+        .history-display::-webkit-scrollbar {
+            width: 3px;
+        }
+
+        .history-display::-webkit-scrollbar-thumb {
+            background: #555;
+            border-radius: 2px;
+        }
+
+        .current-display {
+            color: #fff;
+            font-size: 2.5em;
+            font-weight: 600;
+            text-align: right;
+            padding-right: 10px;
+            min-height: 50px;
+            display: flex;
+            align-items: center;
+            justify-content: flex-end;
+            word-break: break-all;
+            text-shadow: 0 1px 2px rgba(0, 0, 0, 0.8);
+            letter-spacing: 0.5px;
+        }
+
+        .placeholder {
+            color: #666;
+            font-size: 0.95em;
+        }
+
+        .buttons {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            grid-template-rows: repeat(5, 1fr);
+            gap: 15px;
+        }
+
+        button {
+            height: 60px;
+            border: none;
+            border-radius: 15px;
+            font-size: 1.3em;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            box-shadow: 
+                0 4px 12px rgba(0, 0, 0, 0.4),
+                inset 0 1px 0 rgba(255, 255, 255, 0.1);
+            position: relative;
+            overflow: hidden;
+        }
+
+        button::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
+            transition: left 0.5s;
+        }
+
+        button:hover::before {
+            left: 100%;
+        }
+
+        .btn-number {
+            background: linear-gradient(145deg, #2a2a2a, #1f1f1f);
+            color: #e0e0e0;
+            border: 1px solid #404040;
+        }
+
+        .btn-number:hover {
+            background: linear-gradient(145deg, #333, #2a2a2a);
+            transform: translateY(-2px);
+            box-shadow: 
+                0 6px 20px rgba(0, 0, 0, 0.6),
+                inset 0 1px 0 rgba(255, 255, 255, 0.2);
+            color: #fff;
+        }
+
+        .btn-operator {
+            background: linear-gradient(145deg, #666, #555);
+            color: #fff;
+            border: 1px solid #777;
+        }
+
+        .btn-operator:hover {
+            background: linear-gradient(145deg, #777, #666);
+            transform: translateY(-2px);
+            box-shadow: 
+                0 6px 20px rgba(100, 100, 100, 0.5),
+                inset 0 1px 0 rgba(255, 255, 255, 0.3);
+        }
+
+        .btn-clear {
+            background: linear-gradient(145deg, #cc3333, #aa2222);
+            color: #fff;
+            grid-column: 1 / span 2;
+            border: 1px solid #dd4444;
+            font-size: 1.2em;
+        }
+
+        .btn-clear:hover {
+            background: linear-gradient(145deg, #dd4444, #cc3333);
+            transform: translateY(-2px);
+            box-shadow: 
+                0 6px 20px rgba(200, 50, 50, 0.5),
+                inset 0 1px 0 rgba(255, 255, 255, 0.3);
+        }
+
+        .btn-delete {
+            background: linear-gradient(145deg, #4477cc, #3366bb);
+            color: #fff;
+            border: 1px solid #5588dd;
+        }
+
+        .btn-delete:hover {
+            background: linear-gradient(145deg, #5588dd, #4477cc);
+            transform: translateY(-2px);
+            box-shadow: 
+                0 6px 20px rgba(60, 100, 200, 0.5),
+                inset 0 1px 0 rgba(255, 255, 255, 0.3);
+        }
+
+        .btn-equals {
+            background: linear-gradient(145deg, #00aa88, #009977);
+            color: #fff;
+            grid-row: span 2;
+            grid-column: 4;
+            border: 1px solid #00bb99;
+            font-size: 1.4em;
+            font-weight: 700;
+        }
+
+        .btn-equals:hover {
+            background: linear-gradient(145deg, #00bb99, #00aa88);
+            transform: translateY(-2px);
+            box-shadow: 
+                0 8px 25px rgba(0, 170, 130, 0.6),
+                inset 0 1px 0 rgba(255, 255, 255, 0.4);
+        }
+
+        .btn-zero {
+            grid-column: 1 / span 2;
+        }
+
+        button:active {
+            transform: translateY(0);
+            box-shadow: 
+                0 2px 8px rgba(0, 0, 0, 0.4),
+                inset 0 2px 4px rgba(0, 0, 0, 0.3);
+        }
+
+        @media (max-width: 480px) {
+            .calculator {
+                padding: 20px;
+                margin: 10px;
+            }
+            
+            .current-display {
+                font-size: 2.2em;
+            }
+            
+            button {
+                height: 55px;
+                font-size: 1.2em;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="calculator">
+        <div class="title">Kalkulator</div>
+        
+        <!-- DISPLAY DENGAN RIWAYAT - HITAM & ABU -->
+        <div class="display-container">
+            <div class="history-display" id="historyDisplay">
+                <div class="placeholder">Riwayat perhitungan...</div>
+            </div>
+            <div class="current-display" id="currentDisplay">0</div>
+        </div>
+        
+        <div class="buttons">
+            <button class="btn-clear" onclick="clearDisplay()">C</button>
+            <button class="btn-delete" onclick="deleteLast()">⌫</button>
+            <button class="btn-operator" onclick="appendToDisplay('/')">÷</button>
+            
+            <button class="btn-number" onclick="appendToDisplay('7')">7</button>
+            <button class="btn-number" onclick="appendToDisplay('8')">8</button>
+            <button class="btn-number" onclick="appendToDisplay('9')">9</button>
+            <button class="btn-operator" onclick="appendToDisplay('*')">×</button>
+            
+            <button class="btn-number" onclick="appendToDisplay('4')">4</button>
+            <button class="btn-number" onclick="appendToDisplay('5')">5</button>
+            <button class="btn-number" onclick="appendToDisplay('6')">6</button>
+            <button class="btn-operator" onclick="appendToDisplay('-')">-</button>
+            
+            <button class="btn-number" onclick="appendToDisplay('1')">1</button>
+            <button class="btn-number" onclick="appendToDisplay('2')">2</button>
+            <button class="btn-number" onclick="appendToDisplay('3')">3</button>
+            <button class="btn-operator" onclick="appendToDisplay('+')">+</button>
+            
+            <button class="btn-number btn-zero" onclick="appendToDisplay('0')">0</button>
+            <button class="btn-number" onclick="appendToDisplay('.')">.</button>
+            <button class="btn-equals" onclick="calculate()">=</button>
+        </div>
+    </div>
+
+    <script>
+        let currentDisplay = document.getElementById('currentDisplay');
+        let historyDisplay = document.getElementById('historyDisplay');
+        let currentInput = '0';
+        let calculationHistory = [];
+        let shouldResetDisplay = false;
+
+        function updateDisplay() {
+            currentDisplay.textContent = currentInput;
+        }
+
+        function appendToDisplay(value) {
+            if (shouldResetDisplay) {
+                currentInput = '0';
+                shouldResetDisplay = false;
+            }
+
+            if (currentInput === '0' && value !== '.') {
+                currentInput = value;
+            } else {
+                currentInput += value;
+            }
+            
+            updateHistory();
+            updateDisplay();
+        }
+
+        function clearDisplay() {
+            currentInput = '0';
+            calculationHistory = [];
+            shouldResetDisplay = false;
+            updateHistory();
+            updateDisplay();
+        }
+
+        function deleteLast() {
+            if (currentInput.length > 1) {
+                currentInput = currentInput.slice(0, -1);
+            } else {
+                currentInput = '0';
+            }
+            updateHistory();
+            updateDisplay();
+        }
+
+        function calculate() {
+            try {
+                let expression = currentInput
+                    .replace(/×/g, '*')
+                    .replace(/÷/g, '/');
+                
+                let result = eval(expression);
+                
+                if (Number.isInteger(result)) {
+                    result = result.toString();
+                } else {
+                    result = result.toFixed(8).replace(/\.?0+$/, '');
+                }
+                
+                calculationHistory.unshift(`${currentInput} = ${result}`);
+                if (calculationHistory.length > 4) {
+                    calculationHistory.pop();
+                }
+                
+                currentInput = result;
+                shouldResetDisplay = true;
+                updateHistory();
+                updateDisplay();
+                
+            } catch (error) {
+                currentInput = 'Error';
+                shouldResetDisplay = true;
+                updateDisplay();
+                setTimeout(clearDisplay, 1500);
+            }
+        }
+
+        function updateHistory() {
+            if (calculationHistory.length === 0) {
+                historyDisplay.innerHTML = '<div class="placeholder">Riwayat perhitungan...</div>';
+                return;
+            }
+            
+            let recentHistory = calculationHistory.slice(0, 3).join('<br>');
+            historyDisplay.innerHTML = recentHistory;
+        }
+
+        // Keyboard support
+        document.addEventListener('keydown', function(event) {
+            const key = event.key;
+            
+            if (key >= '0' && key <= '9' || key === '.') {
+                appendToDisplay(key);
+            } else if (key === '+' || key === '-') {
+                appendToDisplay(key);
+            } else if (key === '*') {
+                appendToDisplay('×');
+            } else if (key === '/') {
+                appendToDisplay('÷');
+            } else if (key === 'Enter' || key === '=') {
+                calculate();
+            } else if (key === 'Escape' || key === 'c' || key === 'C') {
+                clearDisplay();
+            } else if (key === 'Backspace') {
+                deleteLast();
+            }
+        });
+
+        // Initialize
+        updateDisplay();
+        updateHistory();
+    </script>
+</body>
+</html>
