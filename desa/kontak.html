@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Desa Argasoka - Kontak & Pengaduan</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://cloudflare.com">
+</head>
+<body>
+    <div class="app-container">
+        <aside class="sidebar">
+            <div class="sidebar-header">
+                <i class="fa-solid fa-mountain-sun logo-icon"></i>
+                <h2>Desa Argasoka</h2>
+            </div>
+            <nav class="sidebar-menu">
+                <a href="index.html" class="menu-btn"><i class="fa-solid fa-house"></i> Beranda</a>
+                <a href="profil.html" class="menu-btn"><i class="fa-solid fa-id-card"></i> Profil Desa</a>
+                <a href="struktur.html" class="menu-btn"><i class="fa-solid fa-sitemap"></i> Struktur Organisasi</a>
+                <a href="statistik.html" class="menu-btn"><i class="fa-solid fa-chart-pie"></i> Statistik Penduduk</a>
+                <a href="umkm.html" class="menu-btn"><i class="fa-solid fa-shop"></i> Informasi UMKM</a>
+                <a href="galeri.html" class="menu-btn"><i class="fa-solid fa-images"></i> Galeri Desa</a>
+                <a href="kontak.html" class="menu-btn active"><i class="fa-solid fa-envelope-open-text"></i> Kontak & Pengaduan</a>
+            </nav>
+            <div class="sidebar-footer"><p>&copy; 2026 Desa Argasoka</p></div>
+        </aside>
+
+        <main class="main-content tab-animation">
+            <h2>Kontak & Layanan Pengaduan</h2>
+            <p class="subtitle">Sampaikan aspirasi atau keluhan Anda langsung ke pemerintah desa.</p>
+            <div class="grid-2">
+                <div class="card">
+                    <h3>Hubungi Kami</h3>
+                    <p style="margin: 12px 0;"><i class="fa-solid fa-location-dot text-primary"></i>Jl. Gatot Subroto, Kelurahan Argasoka, Kecamatan Banjarnegara, Kabupaten Banjarnegara, Jawa Tengah (Kode Pos: 53418).</p>
+                    <p style="margin: 12px 0;"><i class="fa-solid fa-phone text-primary"></i> 0852-5848-8588</p>
+                    <p style="margin: 12px 0;"><i class="fa-solid fa-envelope text-primary"></i> https://kel-argasoka.banjarnegarakab.go.id/</p>
+                </div>
+                <div class="card">
+                    <h3>Formulir Pengaduan Warga</h3>
+                    <form id="formPengaduan" onsubmit="event.preventDefault(); alert('Pengaduan Anda berhasil terkirim!');">
+                        <div class="form-group">
+                            <label>Nama Lengkap</label>
+                            <input type="text" placeholder="Masukkan nama Anda" required>
+                        </div>
+                        <div class="form-group">
+                            <label>Isi Laporan / Pengaduan</label>
+                            <textarea rows="4" placeholder="Tuliskan aduan Anda di sini..." required></textarea>
+                        </div>
+                        <button type="submit" class="btn-submit">Kirim Aduan</button>
+                    </form>
+                </div>
+            </div>
+        </main>
+    </div>
+</body>
+</html>
